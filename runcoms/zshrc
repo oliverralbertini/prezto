@@ -121,5 +121,27 @@ preexec_functions+=(_preexec-title)
 HISTSIZE=1000000
 SAVEHIST=1000000
 setopt APPEND_HISTORY
+
+# SCM stuff
+[[ -f "${LOCAL_ADMIN_SCRIPTS}/master.zshrc" ]] && source "${LOCAL_ADMIN_SCRIPTS}/master.zshrc"
+local scm_prompt_file="${LOCAL_ADMIN_SCRIPTS}/scm-prompt"
+if [[ -f "$scm_prompt_file" ]]; then
+    source "$scm_prompt_file"
+else
+    echo "couldn't find SCM prompt file ${scm_prompt_file}"
+fi
+
+_vcs_dirty() {
+    { hg status || git status --porcelain; } 2> /dev/null \
+    | awk '$1 == "?" { print "?" } $1 != "?" { print "*" }' \
+    | sort | uniq | head -c1
+}
+
+function prompt_fbscm() {
+    local repo="$(_dotfiles_scm_info %s)$(_vcs_dirty)"
+    [[ -z $repo ]] && return
+    p10k segment -b green -t "${repo}"
+}
+
 # Allow tab completion in the middle of a word.
 setopt COMPLETE_IN_WORD

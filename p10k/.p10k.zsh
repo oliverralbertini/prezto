@@ -50,7 +50,7 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     context                   # user@host
     dir                       # current directory
-    vcs                       # git status
+    $([[ $(hostname -f) =~ '^devvm[0-9]+.*\.com$' ]] && echo fbscm || echo vcs) # git/hg status
     command_execution_time    # previous command duration
     virtualenv                # python virtual environment
     prompt_char               # prompt symbol
