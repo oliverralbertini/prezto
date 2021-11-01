@@ -113,3 +113,13 @@ function _preexec-title {
 
 precmd_functions+=(_precmd-title)
 preexec_functions+=(_preexec-title)
+
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+
+# fb stuff
+[[ -f /usr/facebook/ops/rc/master.zshrc ]] && source /usr/facebook/ops/rc/master.zshrc
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt APPEND_HISTORY
+# Allow tab completion in the middle of a word.
+setopt COMPLETE_IN_WORD
