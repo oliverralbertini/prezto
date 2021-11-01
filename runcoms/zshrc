@@ -125,11 +125,7 @@ setopt APPEND_HISTORY
 # SCM stuff
 [[ -f "${LOCAL_ADMIN_SCRIPTS}/master.zshrc" ]] && source "${LOCAL_ADMIN_SCRIPTS}/master.zshrc"
 local scm_prompt_file="${LOCAL_ADMIN_SCRIPTS}/scm-prompt"
-if [[ -f "$scm_prompt_file" ]]; then
-    source "$scm_prompt_file"
-else
-    echo "couldn't find SCM prompt file ${scm_prompt_file}"
-fi
+[[ -f "$scm_prompt_file" ]] && source "$scm_prompt_file"
 
 _vcs_dirty() {
     { hg status || git status --porcelain; } 2> /dev/null \
