@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 #
 # Executes commands at the start of an interactive session.
 #
@@ -10,4 +17,103 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+if type brew &>/dev/null; then
+    FPATH=~/shell_functions:/opt/homebrew/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH
+
+    autoload -Uz compinit
+    compinit
+fi
+
+bindkey -v  # vi keybindings
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+bindkey '^N' expand-or-complete
+bindkey '^P' reverse-menu-complete
+bindkey '^R' history-incremental-search-backward
+bindkey -M vicmd '^R' history-incremental-search-backward
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+bindkey '^T' transpose-chars
+bindkey "^?" backward-delete-char
+[[ -f /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme ]] && source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# iterm stuff https://iterm2.com/documentation-shell-integration.html
+export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
+source /usr/local/bin/.iterm2_shell_integration.zsh
+
+iterm2_print_user_vars() {
+  iterm2_set_user_var gitBranch "$(git branch 2>/dev/null | grep '\*' | cut -c3-)"
+  iterm2_set_user_var home "$(echo -n "$HOME")"
+}
+
+# vim mode stuff
+# Activate vim mode.
+bindkey -v
+# Remove mode switching delay.
+KEYTIMEOUT=5
+
+# https://archive.emily.st/2013/05/03/zsh-vi-cursor/
+_block_cursor() {
+  print -n -- "\E]50;CursorShape=0\C-G"
+}
+
+_line_cursor() {
+  print -n -- "\E]50;CursorShape=1\C-G"
+}
+
+function zle-keymap-select zle-line-init {
+    # change cursor shape in iTerm2
+    case $KEYMAP in
+        vicmd)      _block_cursor;;
+        viins|main) _line_cursor;;
+    esac
+
+    zle reset-prompt
+    zle -R
+}
+
+function zle-line-finish {
+    _block_cursor
+}
+
+zle -N zle-line-init
+zle -N zle-line-finish
+zle -N zle-keymap-select
+
+# interactive comments
+setopt interactive_comments
+
+# https://github.com/cbarrick/dotfiles/blob/master/home/.zsh/.zshrc
+# Sets the title to whatever is passed as $1
+function _set-term-title {
+    # Escape the argument for printf formatting.
+    local title=$1
+    title=${title//\\/\\\\}
+    title=${title//\"/\\\"}
+    title=${title//\%/\%\%}
+
+    # Also set window name in tmux.
+    if [[ ${TMUX} ]]; then
+        printf '\033]2;%s\033\\' "$title"
+    fi
+}
+
+# At the prompt, we set the title to "$HOST : $PWD".
+function _precmd-title {
+    _set-term-title "$(print -P %m : %~)"
+}
+
+# When running a command, set the title to "$HOST : $COMMAND"
+function _preexec-title {
+    _set-term-title "$(print -P %m : $1)"
+}
+
+precmd_functions+=(_precmd-title)
+preexec_functions+=(_preexec-title)
