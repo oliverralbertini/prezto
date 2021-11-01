@@ -20,12 +20,12 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-if type brew &>/dev/null; then
-    FPATH=~/shell_functions:/opt/homebrew/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH
+# if type brew &>/dev/null; then
+    # FPATH=~/shell_functions:/opt/homebrew/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH
 
-    autoload -Uz compinit
-    compinit
-fi
+    # autoload -Uz compinit
+    # compinit
+# fi
 
 bindkey -v  # vi keybindings
 zstyle ':completion:*' menu select
@@ -39,10 +39,6 @@ zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 bindkey '^T' transpose-chars
 bindkey "^?" backward-delete-char
-[[ -f /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme ]] && source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # iterm stuff https://iterm2.com/documentation-shell-integration.html
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
