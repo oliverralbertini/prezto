@@ -141,3 +141,7 @@ function prompt_fbscm() {
 
 # Allow tab completion in the middle of a word.
 setopt COMPLETE_IN_WORD
+
+# Aliases and functions
+source $ZDOTDIR/.aliases.zsh
+source $ZDOTDIR/.functions.zsh
