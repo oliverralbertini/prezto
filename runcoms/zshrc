@@ -145,3 +145,11 @@ setopt COMPLETE_IN_WORD
 # Aliases and functions
 source $ZDOTDIR/.aliases.zsh
 source $ZDOTDIR/.functions.zsh
+
+path=(
+    $HOME/bin
+    $HOME/.bin
+    ~/.cargo/bin
+    /usr/local/chronos/scripts
+    $path
+)
