@@ -45,7 +45,7 @@ export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 source /usr/local/bin/.iterm2_shell_integration.zsh
 
 iterm2_print_user_vars() {
-  iterm2_set_user_var gitBranch "$(git branch 2>/dev/null | grep '\*' | cut -c3-)"
+  # iterm2_set_user_var gitBranch "$(gitBranch)"
   iterm2_set_user_var home "$(echo -n "$HOME")"
 }
 
@@ -101,14 +101,30 @@ function _set-term-title {
     fi
 }
 
-# At the prompt, we set the title to "$HOST : $PWD".
-function _precmd-title {
-    _set-term-title "$(print -P %m : %~)"
+function getBranch {
+    local branch
+    branch=$(gitBranch)
+    [[ -z ${branch} ]] && branch=$(hgBranch)
+    [[ -z ${branch} ]] && return
+    printf ' | %s' "${branch}"
 }
 
-# When running a command, set the title to "$HOST : $COMMAND"
+function gitBranch {
+    git branch 2>/dev/null | grep '\*' | cut -c3-
+}
+
+function hgBranch {
+    hg desc 2>/dev/null
+}
+
+# At the prompt, we set the title to "$HOST | $PWD | branch".
+function _precmd-title {
+    _set-term-title "$(print -P "${HOST}" \| %~ "$(getBranch)")"
+}
+
+# When running a command, set the title to include command
 function _preexec-title {
-    _set-term-title "$(print -P %m : $1)"
+    _set-term-title "$(print -P "${HOST}" \| %~ \| $1 "$(getBranch)")"
 }
 
 precmd_functions+=(_precmd-title)
