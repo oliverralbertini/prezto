@@ -119,12 +119,12 @@ function hgBranch {
 
 # At the prompt, we set the title to "$HOST | $PWD | branch".
 function _precmd-title {
-    _set-term-title "$(print -P "${HOST}" \| %~ "$(getBranch)")"
+    _set-term-title "$(print -P %m \| %~ "$(getBranch)")"
 }
 
 # When running a command, set the title to include command
 function _preexec-title {
-    _set-term-title "$(print -P "${HOST}" \| %~ \| $1 "$(getBranch)")"
+    _set-term-title "$(print -P %m \| %~ \| $1 "$(getBranch)")"
 }
 
 precmd_functions+=(_precmd-title)
