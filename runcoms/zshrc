@@ -152,7 +152,7 @@ _vcs_dirty() {
 function prompt_fbscm() {
     local repo="$(_dotfiles_scm_info %s)$(_vcs_dirty)"
     [[ -z $repo ]] && return
-    p10k segment -b green -t "${repo}"
+    p10k segment -f gray -t "${repo}"
 }
 
 # Allow tab completion in the middle of a word.
