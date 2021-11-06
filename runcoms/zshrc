@@ -42,7 +42,8 @@ bindkey "^?" backward-delete-char
 
 # iterm stuff https://iterm2.com/documentation-shell-integration.html
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
-source /usr/local/bin/.iterm2_shell_integration.zsh
+[[ -f /usr/local/bin/.iterm2_shell_integration.zsh ]] && source /usr/local/bin/.iterm2_shell_integration.zsh
+[[ -f ~/.iterm2_shell_integration.zsh ]] && source ~/.iterm2_shell_integration.zsh
 
 iterm2_print_user_vars() {
   # iterm2_set_user_var gitBranch "$(gitBranch)"
