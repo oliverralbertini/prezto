@@ -89,16 +89,20 @@ setopt interactive_comments
 
 # https://github.com/cbarrick/dotfiles/blob/master/home/.zsh/.zshrc
 # Sets the title to whatever is passed as $1
-function _set-term-title {
+function _set-tmux-titles {
     # Escape the argument for printf formatting.
-    local title=$1
-    title=${title//\\/\\\\}
-    title=${title//\"/\\\"}
-    title=${title//\%/\%\%}
+    local window_title=$1 pane_title=$2
+    window_title=${window_title//\\/\\\\}
+    window_title=${window_title//\"/\\\"}
+    window_title=${window_title//\%/\%\%}
+    pane_title=${pane_title//\\/\\\\}
+    pane_title=${pane_title//\"/\\\"}
+    pane_title=${pane_title//\%/\%\%}
 
-    # Also set window name in tmux.
+    # Set window name in tmux.
     if [[ ${TMUX} ]]; then
-        printf '\033]2;%s\033\\' "$title"
+        tmux rename-window "$window_title"
+        printf '\033]2;%s\033\\' "$pane_title"
     fi
 }
 
@@ -120,12 +124,12 @@ function hgBranch {
 
 # At the prompt, we set the title to "$HOST | $PWD | branch".
 function _precmd-title {
-    _set-term-title "$(print -P %m \| %~ "$(getBranch)")"
+    _set-tmux-titles "$(print -P %m \| %1d)" "$(print -P "$(getBranch)")"
 }
 
 # When running a command, set the title to include command
 function _preexec-title {
-    _set-term-title "$(print -P %m \| %~ \| $1 "$(getBranch)")"
+    _set-tmux-titles "$(print -P %m \| %1d)" "$(print -P $1 "$(getBranch)")"
 }
 
 precmd_functions+=(_precmd-title)
