@@ -119,7 +119,7 @@ function gitBranch {
 }
 
 function hgBranch {
-    hg desc 2>/dev/null
+    hg desc 2>/dev/null | sed -e 's/`/"/g'
 }
 
 # At the prompt, we set the title to "$HOST | $PWD | branch".
