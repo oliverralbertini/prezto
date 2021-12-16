@@ -172,5 +172,7 @@ path=(
     $HOME/.bin
     ~/.cargo/bin
     /usr/local/chronos/scripts
+    ~/homebrew/bin
+    ~/homebrew/sbin
     $path
 )
