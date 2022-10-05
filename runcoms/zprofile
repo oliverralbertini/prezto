@@ -17,12 +17,8 @@ fi
 # Editors
 #
 
-if [[ -z "$EDITOR" ]]; then
-  export EDITOR=vim
-fi
-if [[ -z "$VISUAL" ]]; then
-  export VISUAL=vim
-fi
+export EDITOR=vim
+export VISUAL=vim
 if [[ -z "$PAGER" ]]; then
   export PAGER=less
 fi
