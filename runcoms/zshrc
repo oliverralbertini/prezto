@@ -172,5 +172,6 @@ path=(
     /usr/local/chronos/scripts
     ~/homebrew/bin
     ~/homebrew/sbin
+    ~/go/bin
     $path
 )
