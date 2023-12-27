@@ -28,14 +28,14 @@ fi
 # fi
 
 # iterm stuff https://iterm2.com/documentation-shell-integration.html
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
-[[ -f /usr/local/bin/.iterm2_shell_integration.zsh ]] && source /usr/local/bin/.iterm2_shell_integration.zsh
-[[ -f ~/.iterm2_shell_integration.zsh ]] && source ~/.iterm2_shell_integration.zsh
+# export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
+# [[ -f /usr/local/bin/.iterm2_shell_integration.zsh ]] && source /usr/local/bin/.iterm2_shell_integration.zsh
+# [[ -f ~/.iterm2_shell_integration.zsh ]] && source ~/.iterm2_shell_integration.zsh
 
-iterm2_print_user_vars() {
-  # iterm2_set_user_var gitBranch "$(gitBranch)"
-  iterm2_set_user_var home "$(echo -n "$HOME")"
-}
+# iterm2_print_user_vars() {
+#   # iterm2_set_user_var gitBranch "$(gitBranch)"
+#   iterm2_set_user_var home "$(echo -n "$HOME")"
+# }
 
 # Remove mode switching delay.
 KEYTIMEOUT=5
@@ -94,23 +94,23 @@ setopt interactive_comments
 
 # https://github.com/cbarrick/dotfiles/blob/master/home/.zsh/.zshrc
 # Sets the title to whatever is passed as $1
-function _set-tmux-titles {
-    # Escape the argument for printf formatting.
-    local window_title=$1 pane_title=$2
-    window_title=${window_title//\\/\\\\}
-    window_title=${window_title//\"/\\\"}
-    window_title=${window_title//\%/\%\%}
-    pane_title=${pane_title//\\/\\\\}
-    pane_title=${pane_title//\"/\\\"}
-    pane_title=${pane_title//\%/\%\%}
-
-    # Set window name in tmux.
-    if [[ ${TMUX} ]]; then
-        tmux rename-window "$window_title"
-        printf '\033]2;%s\033\\' "$pane_title"
-    fi
-}
-
+# function _set-tmux-titles {
+#     # Escape the argument for printf formatting.
+#     local window_title=$1 pane_title=$2
+#     window_title=${window_title//\\/\\\\}
+#     window_title=${window_title//\"/\\\"}
+#     window_title=${window_title//\%/\%\%}
+#     pane_title=${pane_title//\\/\\\\}
+#     pane_title=${pane_title//\"/\\\"}
+#     pane_title=${pane_title//\%/\%\%}
+#
+#     # Set window name in tmux.
+#     if [[ ${TMUX} ]]; then
+#         tmux rename-window "$window_title"
+#         printf '\033]2;%s\033\\' "$pane_title"
+#     fi
+# }
+#
 function getBranch {
     local branch
     branch=$(gitBranch)
@@ -127,16 +127,16 @@ function hgBranch {
     hg desc 2>/dev/null | sed -e 's/`/"/g'
 }
 
-# At the prompt, we set the title to "$HOST | $PWD | branch".
-function _precmd-title {
-    _set-tmux-titles "$(print -P %m \| %1d)" "$(print -P "$(getBranch)")"
-}
-
-# When running a command, set the title to include command
-function _preexec-title {
-    _set-tmux-titles "$(print -P %m \| %1d)" "$(print -P $1 "$(getBranch)")"
-}
-
+# # At the prompt, we set the title to "$HOST | $PWD | branch".
+# function _precmd-title {
+#     _set-tmux-titles "$(print -P %m \| %1d)" "$(print -P "$(getBranch)")"
+# }
+#
+# # When running a command, set the title to include command
+# function _preexec-title {
+#     _set-tmux-titles "$(print -P %m \| %1d)" "$(print -P $1 "$(getBranch)")"
+# }
+#
 precmd_functions+=(_precmd-title)
 preexec_functions+=(_preexec-title)
 
@@ -169,6 +169,7 @@ path=(
     $HOME/bin
     $HOME/.bin
     ~/.cargo/bin
+    ~/.conda/envs/meta/bin
     /usr/local/chronos/scripts
     ~/homebrew/bin
     ~/homebrew/sbin
